@@ -11,7 +11,7 @@ function init() {
 	// set up the scene
     createScene();
     
-    intro = true;
+    //intro = true;
 
 	//call game loop
 	update();
@@ -87,5 +87,5 @@ function update() {
 }
 
 function render() {
-    renderer.render(scene, camera);//draw
+    renderer.render(scene, camera); //draw
 }
