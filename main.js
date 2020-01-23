@@ -1,5 +1,7 @@
 window.addEventListener('load', init, false);
 
+import { VRButton } from './THREE/webxr/VRButton.js';
+
 var camera;
 var scene;
 var renderer;
@@ -14,14 +16,19 @@ function init() {
     //intro = true;
 
 	//call game loop
-	update();
+    //update();
+
+    renderer.setAnimationLoop(update);    
 }
 
 function createScene() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    
+
     renderer = new THREE.WebGLRenderer();
+    renderer.vr.enabled = true;
+    document.body.appendChild(VRButton.createButton(renderer));
+
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
@@ -30,6 +37,7 @@ function createScene() {
     addWorld();
     addLight();
     addStars();
+
 }
 
 function addWorld() {
@@ -42,7 +50,7 @@ function addWorld() {
 }
 
 function addStars() {
-    for(i=0; i<150; i++) {
+    for(var i=0; i<150; i++) {
         var geoStar = new THREE.CubeGeometry( 0.2, 0.2, 5 );
         var matStar = new THREE.MeshBasicMaterial({ color: 0xbfdfff });
         var star = new THREE.Mesh( geoStar, matStar );
@@ -59,7 +67,7 @@ function updateStars() {
 
     }
     else {
-        for(i=0; i<150; i++) {
+        for(var i=0; i<150; i++) {
             if(starArray[i].position.z >= 0) {
                 resetStar(i);
             }
@@ -83,9 +91,10 @@ function update() {
     //world.rotation.z = -Math.PI/2;
     updateStars();
     render();
-    requestAnimationFrame( update );
+    //requestAnimationFrame( update );
 }
 
 function render() {
     renderer.render(scene, camera); //draw
 }
+
