@@ -1,6 +1,9 @@
-window.addEventListener('load', init, false);
+import _ from 'lodash';
 
-import { VRButton } from './THREE/webxr/VRButton.js';
+var THREE = require('three');
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+
+window.addEventListener('load', init, false);
 
 var camera;
 var scene;
@@ -8,6 +11,8 @@ var renderer;
 var world;
 var starArray = [];
 var intro = false;
+
+
 
 function init() {
 	// set up the scene
@@ -18,6 +23,8 @@ function init() {
 	//call game loop
     //update();
 
+    document.body.appendChild( VRButton.createButton( renderer ) );
+
     renderer.setAnimationLoop(update);    
 }
 
@@ -26,9 +33,7 @@ function createScene() {
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     renderer = new THREE.WebGLRenderer();
-    renderer.vr.enabled = true;
-    document.body.appendChild(VRButton.createButton(renderer));
-
+    renderer.xr.enabled = true;
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
@@ -90,11 +95,12 @@ function addLight() {
 function update() {
     //world.rotation.z = -Math.PI/2;
     updateStars();
-    render();
+    //render();
+    renderer.render( scene, camera );
     //requestAnimationFrame( update );
 }
 
-function render() {
-    renderer.render(scene, camera); //draw
-}
+// function render() {
+//     renderer.render(scene, camera); //draw
+// }
 
