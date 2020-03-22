@@ -1,6 +1,5 @@
 import _ from 'lodash';
 var THREE = require('three');
-
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 window.addEventListener('load', init, false);
@@ -8,20 +7,19 @@ window.addEventListener('load', init, false);
 var camera;
 var scene;
 var renderer;
-var world;
 var starArray = [];
 var intro = false;
 var moveSpeed = 0;
 var numbToUpdate = 1;
 
 function init() {
-    //button at bottom of screen that toggles VR view
-    document.body.appendChild( VRButton.createButton( renderer ) );
-
 	// set up the scene
     createScene();
 
     intro=true;
+
+    //button at bottom of screen that toggles VR view
+    document.body.appendChild( VRButton.createButton( renderer ) );
 
     //call game loop
     //this is used instead of requestAnimationFrame due to VR requirements
