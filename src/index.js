@@ -1,15 +1,18 @@
 import _ from 'lodash';
+var THREE = require('three');
+
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 window.addEventListener('load', init, false);
 
-var THREE = require('three');
 var camera;
 var scene;
 var renderer;
 var world;
 var starArray = [];
 var intro = false;
+var moveSpeed = 0;
+var numbToUpdate = 1;
 
 function init() {
     //button at bottom of screen that toggles VR view
@@ -36,18 +39,8 @@ function createScene() {
 
     camera.position.z = 6;
     camera.position.y = 3;
-    // addWorld();
-    // addLight();
+    addLight();
     addStars();
-}
-
-function addWorld() {
-    // var geoWorld = new THREE.SphereGeometry( 25, 40, 40 );s
-    // var matWorld = new THREE.MeshBasicMaterial( { color: 0x111111 } );
-    // world = new THREE.Mesh( geoWorld, matWorld );
-    // scene.add( world );
-    // world.position.y = -24;
-    // world.position.z = 2;
 }
 
 function addStars() {
@@ -57,19 +50,28 @@ function addStars() {
         var star = new THREE.Mesh( geoStar, matStar );
         scene.add(star);
         starArray[i] = star;
-        star.position.x = (Math.random() - 0.5) * window.innerWidth/12;
-        star.position.y = (Math.random() - 0.5) * window.innerHeight/12;
-        star.position.z = Math.random() * -100;
+        star.position.x = (Math.random() - 0.5) * window.innerWidth/2;
+        star.position.y = (Math.random() - 0.5) * window.innerHeight/2;
+        star.position.z = (Math.random() * -200) - 200;
     }
 }
 
 function updateStars() {
     if(intro) {
-        for(var i=0; i<150; i++) {
-            if(starArray[i].position.z >= 0) {
+        console.log("intro");
+        for(var i=0; i<numbToUpdate; i++) {
+            if(starArray[i].position.z >= -40) {
                 resetStar(i);
             }
-            starArray[i].position.z += 0.5;
+            starArray[i].position.z += moveSpeed;
+        }
+        if(numbToUpdate < 149) {
+            numbToUpdate++;
+        }
+        moveSpeed += 0.01;
+        if(moveSpeed>3) {
+            intro = false;
+            console.log("intro done");
         }
     }
     else {
@@ -83,13 +85,13 @@ function updateStars() {
 }
 
 function resetStar(index) {
-    starArray[index].position.z = -100;
+    starArray[index].position.z = -150;
     starArray[index].position.x = (Math.random() - 0.5) * window.innerWidth/12;
     starArray[index].position.y = (Math.random() - 0.5) * window.innerHeight/12;
 }
 
 function addLight() {
-    // var hemisphereLight = new THREE.HemisphereLight(0xfffafa,0x000000, .9)
+    // var hemisphereLight = new THREE.HemisphereLight(0xff0000,0x000000, 10);
     // scene.add(hemisphereLight);   
 }
 
