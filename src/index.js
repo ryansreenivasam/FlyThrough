@@ -1,10 +1,9 @@
 import _ from 'lodash';
-
-var THREE = require('three');
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 window.addEventListener('load', init, false);
 
+var THREE = require('three');
 var camera;
 var scene;
 var renderer;
@@ -12,19 +11,17 @@ var world;
 var starArray = [];
 var intro = false;
 
-
-
 function init() {
-	// set up the scene
-    createScene();
-    
-    //intro = true;
-
-	//call game loop
-    //update();
-
+    //button at bottom of screen that toggles VR view
     document.body.appendChild( VRButton.createButton( renderer ) );
 
+	// set up the scene
+    createScene();
+
+    intro=true;
+
+    //call game loop
+    //this is used instead of requestAnimationFrame due to VR requirements
     renderer.setAnimationLoop(update);    
 }
 
@@ -39,14 +36,13 @@ function createScene() {
 
     camera.position.z = 6;
     camera.position.y = 3;
-    addWorld();
-    addLight();
+    // addWorld();
+    // addLight();
     addStars();
-
 }
 
 function addWorld() {
-    // var geoWorld = new THREE.SphereGeometry( 25, 40, 40 );
+    // var geoWorld = new THREE.SphereGeometry( 25, 40, 40 );s
     // var matWorld = new THREE.MeshBasicMaterial( { color: 0x111111 } );
     // world = new THREE.Mesh( geoWorld, matWorld );
     // scene.add( world );
@@ -69,7 +65,12 @@ function addStars() {
 
 function updateStars() {
     if(intro) {
-
+        for(var i=0; i<150; i++) {
+            if(starArray[i].position.z >= 0) {
+                resetStar(i);
+            }
+            starArray[i].position.z += 0.5;
+        }
     }
     else {
         for(var i=0; i<150; i++) {
